@@ -1,3 +1,3 @@
 # Tensorflow Machine Learning projects....
 
-**1.** Image Augmentation **(run `test.py` to get the full compilation and `main.py` for jsut the model summary).**
+**1.** Image Augmentation **(run `test.py` to get the full compilation and `main.py` for just the model summary).**
