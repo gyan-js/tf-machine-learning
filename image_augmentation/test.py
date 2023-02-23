@@ -1,6 +1,6 @@
 import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
-
+from matplotlib import pyplot
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
 #x_train = x_train.reshape(x_train.shape[0], 30, 30, 1)
@@ -12,13 +12,11 @@ from keras.preprocessing.image import ImageDataGenerator
 validation_data_generator = ImageDataGenerator(rescale=1.0/255)
 
 training_data_generator = ImageDataGenerator(
-    rescale=1.0/255,
+    #rescale=1.0/255,
     rotation_range=40,
-    width_shift_range=0.3,
-    height_shift_range=0.3,
-    zoom_range=0.3,
-    horizontal_flip=True,
-    vertical_flip=True,
+    
+    horizontal_flip=False,
+    vertical_flip=False,
     fill_mode='nearest')
 
 validation_image_directory = "D:/Kunal Programming/PYTHON/data_visualization/image_augmentation/xrayed_images/validation_dataset"
@@ -32,7 +30,7 @@ validation_augmented_images = validation_data_generator.flow_from_directory(
 training_augmented_images = training_data_generator.flow_from_directory(
     training_image_directory,
     target_size=(180, 180))
-
+"""
 model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(64, (3, 3), activation='relu',
                            input_shape=(180, 180, 3)),
@@ -65,5 +63,15 @@ model.compile(
 
 model.fit(training_augmented_images,  epochs=10,
           validation_data=validation_augmented_images)
-model.save("Pneumothorax.h5")
+
+model.save('Pneumothorax.h5')
 model.summary()
+"""
+
+for i in range(4):
+    pyplot.subplot(2,2, i+1)
+    batch = training_augmented_images.next()
+    image = batch[0][0].astype('uint8')
+    pyplot.imshow(image)
+pyplot.show()
+    
