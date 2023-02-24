@@ -14,7 +14,6 @@ validation_data_generator = ImageDataGenerator(rescale=1.0/255)
 training_data_generator = ImageDataGenerator(
     #rescale=1.0/255,
     rotation_range=40,
-    
     horizontal_flip=False,
     vertical_flip=False,
     fill_mode='nearest')
@@ -30,7 +29,10 @@ validation_augmented_images = validation_data_generator.flow_from_directory(
 training_augmented_images = training_data_generator.flow_from_directory(
     training_image_directory,
     target_size=(180, 180))
-"""
+
+class_names = list(training_augmented_images.class_indices.keys())
+train_labels = training_augmented_images.classes
+
 model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(64, (3, 3), activation='relu',
                            input_shape=(180, 180, 3)),
@@ -54,6 +56,7 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(2, activation='softmax')
 ])
 
+
 model.compile(
     optimizer='adam',
     loss='categorical_crossentropy',
@@ -61,17 +64,36 @@ model.compile(
 )
 
 
-model.fit(training_augmented_images,  epochs=10,
+model.fit(training_augmented_images,  epochs=1,
           validation_data=validation_augmented_images)
 
-model.save('Pneumothorax.h5')
+model.save('LungDisease.h5')
 model.summary()
-"""
 
-for i in range(4):
-    pyplot.subplot(2,2, i+1)
+
+
+score = model.evaluate(validation_augmented_images)
+print("test Loss:", score[0])
+print('Test accuracy:', score[1])
+print(training_augmented_images)
+
+
+for layer in model.layers:
+    print(layer.output_shape)
+
+for i in range(25):
+    pyplot.subplot(5,5, i+1)
     batch = training_augmented_images.next()
     image = batch[0][0].astype('uint8')
+    pyplot.xticks([])
+    pyplot.yticks([])
+    pyplot.grid(False)
+    pyplot.subplots_adjust(hspace=0.5)
+    pyplot.xlabel(class_names[train_labels[0]])
     pyplot.imshow(image)
 pyplot.show()
+
+
+
+
     
