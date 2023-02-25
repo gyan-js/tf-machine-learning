@@ -14,9 +14,9 @@ training_data_generator = ImageDataGenerator(
     vertical_flip=False,
     fill_mode='nearest')
 
-validation_image_directory = "D:/Kunal Programming/PYTHON/data_visualization/image_augmentation/xrayed_images/validation_dataset"
+validation_image_directory = "/path/to-directory"
 
-training_image_directory = "D:/Kunal Programming/PYTHON/data_visualization/image_augmentation/xrayed_images/training_dataset"
+training_image_directory = "/path/to-directory"
 x = np.asarray(validation_image_directory)
 validation_augmented_images = validation_data_generator.flow_from_directory(
     validation_image_directory,
