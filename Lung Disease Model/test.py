@@ -2,6 +2,8 @@ import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 import numpy as np
+import plot_image
+import plot_value
 
 validation_data_generator = ImageDataGenerator()
 
@@ -54,47 +56,23 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(2, activation='softmax')
 ])
 
+predictions = model.predict(validation_augmented_images)
 
-for i in range(4):
-    plt.subplot(2, 2, i+1)
-
-    predictions = model.predict(validation_augmented_images)
-    batch = validation_augmented_images.next()
-    image = batch[0][0].astype('uint8')
-    predictions, true_label = predictions[i], test_labels[i]
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-
-    plt.imshow(image)
-
-    predicted_labels = np.argmax(predictions)
-    if predicted_labels == class_names[0]:
-        color = 'red'
-    else:
-        color = 'green'
-
-    plt.xlabel("{} {:2.0f}% ({})".format(class_names[predicted_labels],100*np.max(predictions), "."), color=color)
+rows = 5
+cols = 3
+num_images = rows*cols
+plt.figure(figsize=(2*2*cols, 2*rows))
+for i in range(num_images):
+    plt.subplot(rows, 2*cols,2*i+1)
+    plot_image(i, predictions, test_labels, validation_augmented_images, training_augmented_images)
+    plt.subplot(rows, 2*cols, 2*i+2)
+    plot_value(i, predictions, test_labels, class_names)
     
 
-
-
+plt.tight_layout()
 plt.show()
 
 
-'''
-for i in range(16):
-    plt.subplot(4, 4, i+1)
-    batch = training_augmented_images.next()
-    image = batch[0][0].astype('uint8')
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.subplots_adjust(hspace=0.3)
-    plt.xlabel(class_names[train_labels[0]])
-    plt.imshow(image)
-plt.show()
-'''
 model.compile(
     optimizer='adam',
     loss='categorical_crossentropy',
@@ -103,7 +81,7 @@ model.compile(
 
 
 model.fit(training_augmented_images,  epochs=1,
-          validation_data=validation_augmented_images, batch_size=batch)
+          validation_data=validation_augmented_images)
 
 model.save('LungDisease.h5')
 model.summary()
@@ -119,6 +97,6 @@ for layer in model.layers:
     print(layer.output_shape)
 
 print(class_names)
-print(true_label)
+
 
 # https://medium.com/edureka/tensorflow-image-classification-19b63b7bfd95
