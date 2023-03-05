@@ -14,9 +14,9 @@ training_data_generator = ImageDataGenerator(
     vertical_flip=False,
     fill_mode='nearest')
 
-validation_image_directory = "/path/to-directory"
+validation_image_directory = "D:/Kunal Programming/PYTHON/tf-machine-learning/Lung Disease Model/xrayed_images/validation_dataset"
 
-training_image_directory = "/path/to-directory"
+training_image_directory = "D:/Kunal Programming/PYTHON/tf-machine-learning/Lung Disease Model/xrayed_images/training_dataset"
 x = np.asarray(validation_image_directory)
 validation_augmented_images = validation_data_generator.flow_from_directory(
     validation_image_directory,
@@ -34,7 +34,7 @@ test_labels = validation_augmented_images.classes
 
 model = tf.keras.models.Sequential([
 
-    tf.keras.layers.Conv2D(64, (3, 3), activation='relu',
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu',
                            input_shape=(180, 180, 3)),
     tf.keras.layers.MaxPooling2D(2, 2),
 
