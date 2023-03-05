@@ -20,6 +20,7 @@ def allowed_file(filename):
 classes = ['infected', 'uninfected']
 
 def predict(filename, model):
+    return 'Hello'
     
 
 @app.route('/')
