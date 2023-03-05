@@ -44,9 +44,14 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
     tf.keras.layers.MaxPooling2D(2, 2),
 
-    tf.keras.layers.Conv2D(320, (3, 3), activation='relu'),
+    tf.keras.layers.Conv2D(256, (3, 3), activation='relu'),
     tf.keras.layers.MaxPooling2D(2, 2),
 
+    tf.keras.layers.Conv2D(512, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D(2, 2),
+
+    
+    
     # Flatten the results to feed into a Dense Layer
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dropout(0.5),
@@ -58,19 +63,15 @@ model = tf.keras.models.Sequential([
 
 predictions = model.predict(validation_augmented_images)
 
-rows = 5
-cols = 3
-num_images = rows*cols
-plt.figure(figsize=(2*2*cols, 2*rows))
-for i in range(num_images):
-    plt.subplot(rows, 2*cols,2*i+1)
+
+for i in range(9):
+    plt.subplot(3, 3, i+1)
     plot_image(i, predictions, test_labels, validation_augmented_images, training_augmented_images)
-    plt.subplot(rows, 2*cols, 2*i+2)
-    plot_value(i, predictions, test_labels, class_names)
+  
     
 
 plt.tight_layout()
-plt.show()
+##plt.show()
 
 
 model.compile(
@@ -80,10 +81,10 @@ model.compile(
 )
 
 
-model.fit(training_augmented_images,  epochs=1,
+model.fit(training_augmented_images,  epochs=5,
           validation_data=validation_augmented_images)
 
-model.save('LungDisease.h5')
+model.save('pneumothorax.h5')
 model.summary()
 
 
